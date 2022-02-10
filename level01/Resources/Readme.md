@@ -76,3 +76,5 @@ flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
 - `Check flag.Here is your token : f2av5il02puano7naaf6adaaf`
 
 
+- Password flag01: abcdefg
+- Password level02: f2av5il02puano7naaf6adaaf

@@ -82,3 +82,5 @@ flag00:x:3000:3000::/home/flag/flag00:/bin/bash
 
 
 
+- Password flag00: nottoohardhere
+- Password level01: x24ti5gi3x0ol2eh4esiuxias
